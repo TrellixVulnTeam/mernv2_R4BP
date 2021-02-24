@@ -8,7 +8,6 @@ import NotFound from './components/pages/NotFound/NotFoundPage';
 import AddPost from './components/pages/AddPost/AddPostPage';
 import SinglePost from './components/pages/SinglePost/SinglePostPage';
 
-
 class App extends React.Component {
   state = {
     posts: [],

@@ -18,8 +18,8 @@ app.use(mongoSanitize())
 
 
 app.use('/api', postRoutes);
-
-app.use(express.static(path.join(__dirname, '/../client/build')));  
+const buildPath = path.join(__dirname, '/../client/', 'build')
+app.use(express.static(buildPath));  
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '/../client/build', 'index.html'));

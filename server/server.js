@@ -1,9 +1,8 @@
-const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
-
+const path = require('path');
 
 const config = require('./config');
 const loadTestData = require('./testData');
@@ -18,11 +17,10 @@ app.use(mongoSanitize())
 
 
 app.use('/api', postRoutes);
-const buildPath = path.join(__dirname, '/../client/', 'build')
-app.use(express.static(buildPath));  
 
+app.use(express.static(path.join(__dirname, '/../client/build')));  
 app.get('*', (req, res) => {
-  res.sendFile(path.join('/../client/build', 'index.html'));
+  res.sendFile(path.join(__dirname + '/../client/build/index.html'));
 })
 
 

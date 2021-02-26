@@ -3,7 +3,7 @@ import PostForm from '../../features/PostForm/PostFormContainer';
 
 const AddPost = () => (
     <div>
-        <PostForm />
+        <PostForm method="addPost" />
     </div>
 )
 

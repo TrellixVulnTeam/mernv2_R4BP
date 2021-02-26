@@ -5,7 +5,7 @@ import './TextField.scss';
 
 const TextField = ({ value, label, onChange, ...otherProps }) => (
   <label className="text-field">
-    <span className={`text-field__label ${(!value.length > 0) ? 'text-field__label--big' : ''}`}>{label}</span>
+    <span className={`text-field__label ? 'text-field__label--big' : ''}`}>{label}</span>
     <input {...otherProps} value={value} onChange={onChange} className="text-field__input" />
   </label>
 );
@@ -17,3 +17,4 @@ TextField.propTypes = {
 };
 
 export default TextField;
+// find why give error ${(!value.length > 0) 

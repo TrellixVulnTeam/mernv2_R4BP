@@ -12,6 +12,7 @@ export const START_REQUEST = createActionName('START_REQUEST');
 export const END_REQUEST = createActionName('END_REQUEST');
 export const ERROR_REQUEST = createActionName('ERROR_REQUEST');
 export const SEND_REQUEST = createActionName('SEND_REQUEST');
+export const DELETE_POST_REQUEST = createActionName('DELETE_POST_REQUEST')
 export const LOAD_POSTS_PAGE = createActionName('LOAD_POSTS_PAGE');
 
 
@@ -28,7 +29,7 @@ export const startRequest = () => ({ type: START_REQUEST });
 export const endRequest = () => ({ type: END_REQUEST });
 export const errorRequest = error => ({ error, type: ERROR_REQUEST });
 export const sendRequest = () => ({type: SEND_REQUEST});
-
+export const deleteRequest = () => ({type: DELETE_POST_REQUEST});
 
 const initialState = {
   data: [],
@@ -36,7 +37,8 @@ const initialState = {
     pending: false,
     error: null,
     success: null,
-    send: null
+    send: null,
+    delete: null,
   },
   singlePost: {},
   amount: 0,
@@ -67,6 +69,8 @@ export default function reducer(statePart=initialState, action){
       return {...statePart, request: {pending: false, error:null, success: true}}
     case ERROR_REQUEST:
       return { ...statePart, request: { pending: false, error: action.error, success: false } };
+    case DELETE_POST_REQUEST:
+      return {...statePart, request: {pending: false, error: null, delete: true}}
     default: 
       return statePart;
     }
@@ -93,9 +97,7 @@ export const loadPostRequest = (id) => {
     dispatch(startRequest());
 
     try {
-
       let res = await axios.get(`${API_URL}/posts/${id}`);
-
       dispatch(loadPost(res.data)); 
       dispatch(endRequest())
     } catch(e) {
@@ -108,16 +110,35 @@ export const addPostRequest = (post) => {
     dispatch(startRequest());
     
     try {
-
       let res = await axios.post(`${API_URL}/posts`, post);
-      
       dispatch(sendRequest());
     } catch(e){
       dispatch(errorRequest(e.message))
     }
   }
 }
-
+export const deletePostRequest = (id) => {
+  return async dispatch => {
+    dispatch(startRequest());
+    try {
+      let res = await axios.delete(`${API_URL}/posts/${id}`)
+      dispatch(deleteRequest());
+    } catch(e){
+      dispatch(errorRequest(e.message))
+    }
+  }
+}
+export const editPostRequest = (post,id) => {
+  return async dispatch => {
+    dispatch(startRequest());
+    try {
+      let res = await axios.put(`${API_URL}/posts/${id}`, post);
+      dispatch(sendRequest())
+    } catch(e){
+      dispatch(errorRequest(e.message))
+    }
+  }
+}
 export const loadPostsByPageRequest = (page, numberOfPosts) => {
   return async dispatch => {
     dispatch(startRequest());

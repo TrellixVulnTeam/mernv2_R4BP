@@ -39,7 +39,24 @@ exports.addPost = async (req,res) => {
         res.status(500).json(err)
     }
 }
-
+exports.deletePost = async (req,res) => {
+    try { 
+        const id = req.params.id;
+        await Post.findByIdAndRemove(id);
+        res.status(200).send('Post remove');
+    } catch(err){
+        res.status(500).json(err);
+    }
+}
+exports.editPost = async (req,res) => {
+    try {
+        const _id = req.body._id;
+        await Post.findByIdAndUpdate(_id, req.body)
+        res.status(200).send('Post update')
+    } catch (err) {
+        res.status(500).json(err)
+    }
+}
 exports.getPostsByRange = async (req,res) => {
     try {
         let {startAt, limit} = req.params;

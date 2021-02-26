@@ -7,7 +7,7 @@ import Contact from './components/pages/Contact/ContactPage';
 import NotFound from './components/pages/NotFound/NotFoundPage';
 import AddPost from './components/pages/AddPost/AddPostPage';
 import SinglePost from './components/pages/SinglePost/SinglePostPage';
-
+import EditPostPage from './components/pages/EditPost/EditPostPage'
 
 class App extends React.Component {
   state = {
@@ -22,6 +22,7 @@ class App extends React.Component {
           <Route path='/contact' exact component={Contact} />
           <Route path='/posts' exact component={PostsPage} />
           <Route path='/posts/new' exact component={AddPost} />
+          <Route path='/posts/editpost/:id' exact component={EditPostPage} />
           <Route path='/posts/:id' exact component={SinglePost} />
           <Route component={NotFound} />
         </Switch>

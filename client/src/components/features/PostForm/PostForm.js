@@ -15,9 +15,11 @@ import './PostForm.scss';
 class PostForm extends React.Component {
     state = {
         post: {
-            title: '',
-            author: '',
-            content: ''
+            title: this.props.title || '',
+            author: this.props.author || '',
+            content: this.props.content ||  '',
+            id: this.props.id || '',
+            _id: this.props._id ||  ''
         }
     }
 
@@ -30,19 +32,30 @@ class PostForm extends React.Component {
         this.setState({post: {...post, content: text}});
     }
     addPost = (e) => {
-        const {addPost} = this.props;
+        const {addPost, editPost, method, _id} = this.props;
         const {post} = this.state;
 
         e.preventDefault();
-        addPost(post);
+        if(method === "addPost"){
+            addPost(post);
+        } else if (method ==="editPost"){
+            console.log(post)
+            editPost(post, _id);
+        }
+    }
+    handleDelete = (e) => {
+        e.preventDefault();
+        const {deletePost, post, _id} = this.props;
+        deletePost(_id);
     }
     render(){
         const {post} = this.state;
-        const {request} = this.props;
-        const { handleChange, handleEditor, addPost } = this;
-
+        const {request, method} = this.props;
+        const { handleChange, handleEditor, handleDelete, addPost } = this;
+        
         if(request.error) return <Alert variant="error">{request.error}</Alert>
         else if(request.send) return <Alert variant="success">Post has been added!</Alert>
+        else if(request.delete) return <Alert variant="success">Post has been deleted!</Alert>
         else if(request.pending) return <Spinner />
         else return (
             <form onSubmit={addPost}>
@@ -66,6 +79,7 @@ class PostForm extends React.Component {
                     onChange={handleEditor}
                 />
                 <Button variant="primary">Add post</Button>
+                {method === "editPost" && <Button variant="primary" onClick={handleDelete}>Delete Post</Button>}
             </form >
         )
     }
